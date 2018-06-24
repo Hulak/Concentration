@@ -12,6 +12,7 @@ class Concantration {
     
     private(set) var cards = [Card]()
     
+    
     private var indexOfOneAndOnlyFaceUpCard: Int? {
         get {
             var foundIndex: Int?
@@ -27,7 +28,7 @@ class Concantration {
             return foundIndex
         }
         set {
-            
+       
         }
     }
     
@@ -52,11 +53,17 @@ class Concantration {
             }
         }
     }
-    
     init(numberOfPairsOfCards: Int) {
+        assert(numberOfPairsOfCards > 0, "Concntration.init(\(numberOfPairsOfCards)): you mast have at least one pair of cards")
         for _ in 1...numberOfPairsOfCards {
             let card = Card()
             cards += [card, card]
+        }
+    }
+    func resetGame() {
+        for index in cards.indices {
+            cards[index].isFaceUp = false
+            cards[index].isMatched = false
         }
     }
 }

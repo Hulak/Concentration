@@ -36,6 +36,12 @@ class ViewController: UIViewController {
         }
     }
     
+    @IBAction func newGame(_ sender: UIButton) {
+        game.resetGame()
+        updateViewFromModel()
+        flipCount = 0
+    }
+    
     private func updateViewFromModel() {
         for index in cardButtons.indices{
             let button = cardButtons[index]
