@@ -59,11 +59,13 @@ class Concantration {
             let card = Card()
             cards += [card, card]
         }
+        cards.shuffle()
     }
     func resetGame() {
         for index in cards.indices {
             cards[index].isFaceUp = false
             cards[index].isMatched = false
         }
+        cards.shuffle()
     }
 }

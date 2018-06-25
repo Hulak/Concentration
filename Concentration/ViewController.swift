@@ -38,8 +38,15 @@ class ViewController: UIViewController {
     
     @IBAction func newGame(_ sender: UIButton) {
         game.resetGame()
+        indexTheme = keys.count.arc4random
         updateViewFromModel()
         flipCount = 0
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        indexTheme = keys.count.arc4random
+        updateViewFromModel()
     }
     
     private func updateViewFromModel() {
@@ -56,12 +63,32 @@ class ViewController: UIViewController {
         }
     }
     
+    private var emojiThemes : [String: [String]] = [
+        "Fruits" : ["🥥", "🍍", "🍉", "🍌", "🍑", "🍊", "🥝", "🍇", "🍒", "🍏", "🍓"],
+        "Vegetables" : ["🍆", "🥦", "🥒", "🥕", "🥔", "🌽", "🥑", "🍠"],
+        "Faces" : ["😃", "😘", "😍", "😇", "😎", "🤓", "😭", "😱", "😵", "🙄", "🤯"],
+        "Animals" : ["🐶", "🐱", "🐭", "🐰", "🦊", "🐻", "🐼", "🐨", "🐯", "🦁", "🐸", "🐷", "🐵", "🦄"],
+        "Nature" : ["🌿", "🍄", "🌹", "🌼", "🍁", "🌵", "🔥", "🌈", "🌪"],
+        "Halloween" : ["🕷", "🕸", "👻", "💀", "🎃", "😈", "👺", "🤡", "🦇", "👽"],
+        "Clothes" : ["👚", "👕", "👖", "👗", "👙", "👘", "👔", "👠", "🧤", "🧦", "🧢"],
+        "Drinks" : ["🥛", "☕️", "🥤", "🍶", "🍺", "🍻", "🥂", "🍷", "🥃", "🍸", "🍹", "🍾", "🍵"]
+    ]
+    
+    private var indexTheme = 0 {
+        didSet {
+            print(indexTheme, keys[indexTheme])
+            emojis = emojiThemes[keys[indexTheme]] ?? []
+            emoji = [Int: String] ()
+        }
+    }
+    private var keys: [String] {return Array(emojiThemes.keys)}
+
     private var emojis = ["🥥", "🥑", "🍍", "🍉", "🍌", "🍑", "🍊", "🥝", "🍇", "🍒"]
     
     private var emoji = [Int: String]()
     
     private func emoji(for card: Card) -> String {
-      
+     
         if emoji[card.identifier] == nil, emojis.count > 0 {
             let randomIndex = Int(arc4random_uniform(UInt32(emojis.count - 1)))
             emoji[card.identifier] = emojis.remove(at: randomIndex)
@@ -69,5 +96,26 @@ class ViewController: UIViewController {
         return emoji[card.identifier] ?? "?"
     }
     
+}
+extension Array {
+    mutating func shuffle() {
+        if count < 2 { return }
+        for i in indices.dropLast() {
+            let diff = distance(from: i, to: endIndex)
+            let j = index(i, offsetBy: diff.arc4random)
+            swapAt(i, j)
+        }
+    }
+}
+extension Int {
+    var arc4random: Int {
+        if self > 0 {
+            return Int(arc4random_uniform(UInt32(self)))
+        } else if self < 0 {
+            return -Int(arc4random_uniform(UInt32(self)))
+        } else {
+            return 0
+        }
+    }
 }
 
